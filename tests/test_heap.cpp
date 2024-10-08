@@ -29,6 +29,7 @@ int main() {
         for(usize_t i = 0; i < 10; i++)
             std::cout << i << "=" << ((int *)h1.data())[i] << std::endl;
 
+        // todo test read_arr/write_arr
         {
             int c[3] = {1, 2, 3};
             if(h1.write_arr(c, 1, 0))
