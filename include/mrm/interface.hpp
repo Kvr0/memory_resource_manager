@@ -32,12 +32,25 @@ public:
         return {static_cast<const char *>(data()) + offset, size};
     }
 
-    bool read(void* dst, usize_t size, usize_t offset = 0) const {
-        if(offset + size > size_)
+    bool read_raw(void* dst, usize_t size, usize_t offset = 0) const {
+        if(data() == nullptr || offset + size > size_)
             return false;
         std::memcpy(dst, static_cast<const char *>(data()) + offset,
                     size);
         return true;
+    }
+
+    template <typename T>
+    bool read(T &dst, usize_t offset = 0) const {
+        return read_raw(&dst, sizeof(T), offset);
+    }
+    template <typename T>
+    bool read_arr(T *dst, usize_t count, usize_t offset = 0) const {
+        return read_raw(&dst, sizeof(T) * count, offset);
+    }
+    template <typename T, usize_t N>
+    bool read_arr(T (&dst)[N], usize_t offset = 0) const {
+        return read_arr(dst, N, offset);
     }
 
 protected:
@@ -60,12 +73,25 @@ public:
         return {const_cast<ptr_t>(cview.data()), cview.size()};
     }
 
-    bool write(const void* src, usize_t size, usize_t offset = 0) {
-        if(offset + size > size_)
+    bool write_raw(const void* src, usize_t size, usize_t offset = 0) {
+        if(data() == nullptr || offset + size > size_)
             return false;
         std::memcpy(static_cast<char *>(data()) + offset, src,
                     size);
         return true;
+    }
+
+    template <typename T>
+    bool write(const T &src, usize_t offset = 0) {
+        return write_raw(&src, sizeof(T), offset);
+    }
+    template <typename T>
+    bool write_arr(const T *src, usize_t count, usize_t offset = 0) {
+        return write_raw(&src, sizeof(T) * count, offset);
+    }
+    template <typename T, usize_t N>
+    bool write_arr(const T (&src)[N], usize_t offset = 0) {
+        return write_arr(src, N, offset);
     }
 };
 
