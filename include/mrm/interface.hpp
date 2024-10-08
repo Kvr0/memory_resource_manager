@@ -92,6 +92,10 @@ public:
     resource_manager_i(resource_manager_i &&) noexcept = default;
     resource_manager_i &operator=(resource_manager_i &&) noexcept = default;
 
+    /// @brief Get the size of allocated memory
+    /// @return `mrm::usize_t` The size of allocated memory
+    usize_t size() const noexcept { return resources_.size(); }
+
     /// @brief Get the used size of the manager
     /// @return `mrm::usize_t` The used size of the manager
     usize_t used_size() const noexcept { return used_size_; }

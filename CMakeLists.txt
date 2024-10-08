@@ -6,5 +6,3 @@ include_directories(include)
 
 add_subdirectory(src)
 add_subdirectory(tests)
-
-#add_test(NAME MRM_test COMMAND MRM_test)

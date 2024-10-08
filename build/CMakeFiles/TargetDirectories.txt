@@ -1,5 +1,0 @@
-D:/program/cpp/memory_resource_manager/build/CMakeFiles/ALL_BUILD.dir
-D:/program/cpp/memory_resource_manager/build/CMakeFiles/ZERO_CHECK.dir
-D:/program/cpp/memory_resource_manager/build/src/CMakeFiles/ALL_BUILD.dir
-D:/program/cpp/memory_resource_manager/build/tests/CMakeFiles/MRM_test.dir
-D:/program/cpp/memory_resource_manager/build/tests/CMakeFiles/ALL_BUILD.dir
