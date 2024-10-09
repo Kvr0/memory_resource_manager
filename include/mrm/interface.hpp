@@ -46,7 +46,7 @@ public:
     }
     template <typename T>
     bool read_arr(T *dst, usize_t count, usize_t offset = 0) const {
-        return read_raw(&dst, sizeof(T) * count, offset);
+        return read_raw(dst, sizeof(T) * count, offset);
     }
     template <typename T, usize_t N>
     bool read_arr(T (&dst)[N], usize_t offset = 0) const {
@@ -87,7 +87,7 @@ public:
     }
     template <typename T>
     bool write_arr(const T *src, usize_t count, usize_t offset = 0) {
-        return write_raw(&src, sizeof(T) * count, offset);
+        return write_raw(src, sizeof(T) * count, offset);
     }
     template <typename T, usize_t N>
     bool write_arr(const T (&src)[N], usize_t offset = 0) {
@@ -115,8 +115,21 @@ public:
     resource_manager_i &operator=(const resource_manager_i &) = delete;
 
     // movable
-    resource_manager_i(resource_manager_i &&) noexcept = default;
-    resource_manager_i &operator=(resource_manager_i &&) noexcept = default;
+    resource_manager_i(resource_manager_i && other) noexcept{
+        resources_ = std::move(other.resources_);
+        used_size_ = std::exchange(other.used_size_, 0);
+        for(auto &resource : resources_)
+            resource->manager_ = this;
+    }
+    resource_manager_i &operator=(resource_manager_i && other) noexcept{
+        if(this != &other){
+            resources_ = std::move(other.resources_);
+            used_size_ = std::exchange(other.used_size_, 0);
+            for(auto &resource : resources_)
+                resource->manager_ = this;
+        }
+        return *this;
+    }
 
     /// @brief Get the size of allocated memory
     /// @return `mrm::usize_t` The size of allocated memory
@@ -136,7 +149,7 @@ public:
     /// @brief Allocate memory
     /// @param size The size of memory to allocate
     /// @return `resource_t` The allocated memory
-    virtual resource_t allocate(usize_t size) = 0;
+    virtual resource_t allocate(usize_t size, usize_t offset = 0) = 0;
 
     /// @brief Deallocate memory
     /// @param resource The memory to deallocate

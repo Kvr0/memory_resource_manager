@@ -31,7 +31,7 @@ namespace mrm{
         /// @brief Allocate memory
         /// @param size The size of memory to allocate
         /// @return `mrm::heap` The allocated memory
-        resource_t allocate(usize_t size) override {
+        resource_t allocate(usize_t size, usize_t offset = 0) override {
             return resource_t{::operator new(size), size, this};
         }
 
